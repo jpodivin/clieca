@@ -1,4 +1,5 @@
-# clieca Command Line Elementary Cellular Automata
+# clieca 
+## Command Line Elementary Cellular Automata
 Elementary cellular automata for your command line
 
 Elementary cellular automata are one dimensional, binary cellular automata where next state of each cell 
