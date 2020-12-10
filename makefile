@@ -1,9 +1,12 @@
+BIN=bin
 CC=gcc
 CFLAGS=-Os
-CFLAGS+=-lm
-CFLAGS+=-o clieca
+CFLAGS+= -Wall
+CFLAGS+= -pedantic
 
-all : clieca
+all : $(BIN)/clieca
+	
 
-clieca : clieca/main.c
-	$(CC) $(CFLAGS) clieca/main.c
+$(BIN)/clieca : clieca/main.c
+	mkdir bin \
+	&& $(CC) $(CFLAGS) $< -o $@

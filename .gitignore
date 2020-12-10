@@ -15,6 +15,9 @@ obj/
 *.vspx
 .vs/
 
+#VSCode
+.vscode/
+
 # binaries
 *.dll
 *.dll.config
@@ -24,3 +27,4 @@ obj/
 *.mdb
 *.exe
 *.out
+*.o
