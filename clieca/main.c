@@ -14,9 +14,9 @@ int ruleset = 0;
 
 int runtime = 0;
 
-int main (int argsc, char **argv);
-
 char randomFlag;
+
+int main (int argsc, char **argv);
  
 void initializeAutomaton (int size);
 
