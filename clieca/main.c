@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define WORLD_SIZE 200000
+#define WORLD_SIZE 100
 
 static int worldSize = WORLD_SIZE;
 
@@ -100,7 +100,7 @@ void printState (int size)
 	printf ("\n");
 }
 
-void updateState (int size, char ruleset[])
+void updateState (int size, char rule[])
 { 
 	int neighborhood = 0;
 
@@ -108,7 +108,7 @@ void updateState (int size, char ruleset[])
 	{
 		neighborhood = neighborhoodDetection (i);
 
-		tempState[i] = ruleset[neighborhood];
+		tempState[i] = rule[neighborhood];
 	}
 
 	for (int i = 0; i < worldSize; i++)
@@ -197,40 +197,27 @@ char neighborhoodDetection (int position)
 {  
 	char result = 0;
   
-	char neighborhood[3];
-  
-	char neighborhoodIterator = 3;
+	char neighborhoodIterator = 2;
   
 	position--;  
  
-	while (neighborhoodIterator > 0)
+	while (neighborhoodIterator >= 0)
 	{
-		neighborhoodIterator--;
-
-		neighborhood[neighborhoodIterator] = state[position % worldSize];
+		result += state[position % worldSize] * binExp (2, neighborhoodIterator);
 
 		position++;
-	}
-	
-	neighborhoodIterator = 2;
-  
-	while (neighborhoodIterator > 0)
-	{
-		result += neighborhood[neighborhoodIterator] * binExp (2, neighborhoodIterator);
 
 		neighborhoodIterator--;
 	}
-
-	result += neighborhood[0];
-
+	
 	return result;
 }
 
 int binExp (int base, int exponent)
 {
-	int result = base;
+	int result = 1;
 
-	while (exponent > 1)
+	while (exponent > 0)
 	{
 		result *= base;
 		
