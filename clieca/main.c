@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <ctype.h>
+#include <string.h>
 
 #define WORLD_SIZE 100
 
@@ -33,6 +35,8 @@ int binExp (int base, int exponent);
 int argumentTest (int argsc, char **argv);
 
 int stringcmp(char *str1, char *str2);
+
+int isRule(char *ruleStr);
 
 int main (int argsc, char **argv)
 { 
@@ -117,21 +121,21 @@ void updateState (int size, char rule[])
 		state[i] = tempState[i];
 		
 		tempState[i] = 0;
-	}    
+	}
 } 
  
 int argumentTest (int argsc, char **argv)
 {
 	if (argsc < 2)
 	{
-		printf ("Not enough arguments. Please specify rule.\n");
+		printf("Not enough arguments. Please specify rule.\n");
        
 		return 1;
 	}
-  
-	if (atoi(argv[1]) > 255 || atoi(argv[1]) < 0)
+
+	if (isRule(argv[1]))
 	{
-		printf("Selected rule %d ", atoi(argv[1]));
+		printf("Selected rule '%s' is invalid!\n", argv[1]);
 
 		printf("Valid rules 0 - 255.\n");
 
@@ -235,6 +239,21 @@ int stringcmp(char *str1, char *str2) {
 	for (int i = 0; i < 2; i++) 
 	{
 		if (str1[i] != str2[i] ) return 1;
+	}
+
+	return 0;
+}
+
+int isRule(char *ruleStr){
+
+	for (int i = 0; i < strlen(ruleStr); i++){
+		if (!isdigit(ruleStr[i])){
+			return 1;
+		}
+	}
+
+	if (atoi(ruleStr) < 0 || atoi(ruleStr) >= 255){
+		return 1;
 	}
 
 	return 0;
