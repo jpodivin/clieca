@@ -107,7 +107,7 @@ to '1' and leave rest as '0'.
 }
 
 void printState (int size) 
-{  
+{
  
 	for (int i = 0; i < size; i++)
 	{
@@ -200,6 +200,7 @@ If an invalid arg, or arg value is found, return '1'.
 			runtime = atoi(argv[parsed_args + 1]);
                         parsed_args++;
 		}
+		//set output characters
 		else if (!stringcmp(argv[parsed_args], "-o"))
 		{
 			if (parsed_args + 1 >= argsc || strlen(argv[parsed_args + 1]) != 2){
@@ -212,7 +213,6 @@ If an invalid arg, or arg value is found, return '1'.
 		}
 		parsed_args++;
 	}
-
 	return 0;
 }
 
