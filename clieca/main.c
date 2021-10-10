@@ -4,7 +4,12 @@
 #include <ctype.h>
 #include <string.h>
 
+//Max world size
 #define WORLD_SIZE 100
+	
+//Default characters representing states in stdout
+#define ON_CHAR '*'
+#define OFF_CHAR ' '
 
 static int worldSize = WORLD_SIZE;
 
@@ -15,6 +20,10 @@ char tempState[WORLD_SIZE]; //Swap space for the world state
 int ruleset = 0;
 
 int runtime = 0;
+
+char on_char = ON_CHAR;
+
+char off_char = OFF_CHAR;
 
 char randomFlag; //Randomize the initial state
 
@@ -102,9 +111,9 @@ void printState (int size)
  
 	for (int i = 0; i < size; i++)
 	{
-		if (state[i] == 1) printf ("*");
+		if (state[i] == 1) printf("%c", on_char);
 		
-		else printf (" ");
+		else printf("%c", off_char);
 	}
 
 	printf ("\n");
@@ -157,28 +166,51 @@ If an invalid arg, or arg value is found, return '1'.
 	{
 		return 0;
 	} 
+	
+	int parsed_args = 2;
 
-	for (int i = 2; i < argsc; i++)
+	while (parsed_args < argsc)
 	{
-		if (!stringcmp(argv[i],"-s")) 
+		if (!stringcmp(argv[parsed_args],"-s")) 
 		{
-			if (atoi(argv[i+1]) > WORLD_SIZE) 
+			if (parsed_args + 1 >= argsc){
+				printf("You have to provide world size with '-s'\n");
+				return 1;
+			}
+			if (atoi(argv[parsed_args+1]) > WORLD_SIZE) 
 			{
 				printf("Selected world size exceeds maximum %d\n", WORLD_SIZE);
 
 				return 1;
 			}			
-			worldSize = atoi(argv[i+1]);
+			worldSize = atoi(argv[parsed_args+1]);
+			parsed_args++;
 		}
-		else if (randomFlag == 0 && !stringcmp(argv[i], "-r")) 
+		else if (randomFlag == 0 && !stringcmp(argv[parsed_args], "-r")) 
 		{
 			randomFlag = 1;
 			srand(time(NULL)); //initialize random generator
 		}
-		else if (runtime == 0 && !stringcmp(argv[i], "-t"))
+		else if (runtime == 0 && !stringcmp(argv[parsed_args], "-t"))
 		{
-			runtime = atoi(argv[i + 1]);
+			if (parsed_args + 1 >= argsc){
+				printf("You have to provide run time with '-t'\n");
+				return 1;
+			}
+			runtime = atoi(argv[parsed_args + 1]);
+                        parsed_args++;
 		}
+		else if (!stringcmp(argv[parsed_args], "-o"))
+		{
+			if (parsed_args + 1 >= argsc || strlen(argv[parsed_args + 1]) != 2){
+				printf("You have to provide two characters with '-o'\n");
+				return 1;
+			}
+			on_char = argv[parsed_args + 1][0];
+                        off_char = argv[parsed_args + 1][1];
+			parsed_args++; 
+		}
+		parsed_args++;
 	}
 
 	return 0;
