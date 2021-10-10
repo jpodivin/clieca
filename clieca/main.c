@@ -21,6 +21,10 @@ int ruleset = 0;
 
 int runtime = 0;
 
+char on_char = ON_CHAR;
+
+char off_char = OFF_CHAR;
+
 char randomFlag; //Randomize the initial state
 
 int main (int argsc, char **argv);
@@ -107,9 +111,9 @@ void printState (int size)
  
 	for (int i = 0; i < size; i++)
 	{
-		if (state[i] == 1) printf("%c", ON_CHAR);
+		if (state[i] == 1) printf("%c", on_char);
 		
-		else printf("%c", OFF_CHAR);
+		else printf("%c", off_char);
 	}
 
 	printf ("\n");
@@ -162,28 +166,39 @@ If an invalid arg, or arg value is found, return '1'.
 	{
 		return 0;
 	} 
+	
+	int parsed_args = 2;
 
-	for (int i = 2; i < argsc; i++)
+	while (parsed_args < argsc)
 	{
-		if (!stringcmp(argv[i],"-s")) 
+		if (!stringcmp(argv[parsed_args],"-s")) 
 		{
-			if (atoi(argv[i+1]) > WORLD_SIZE) 
+			if (atoi(argv[parsed_args+1]) > WORLD_SIZE) 
 			{
 				printf("Selected world size exceeds maximum %d\n", WORLD_SIZE);
 
 				return 1;
 			}			
-			worldSize = atoi(argv[i+1]);
+			worldSize = atoi(argv[parsed_args+1]);
+			parsed_args++;
 		}
-		else if (randomFlag == 0 && !stringcmp(argv[i], "-r")) 
+		else if (randomFlag == 0 && !stringcmp(argv[parsed_args], "-r")) 
 		{
 			randomFlag = 1;
 			srand(time(NULL)); //initialize random generator
 		}
-		else if (runtime == 0 && !stringcmp(argv[i], "-t"))
+		else if (runtime == 0 && !stringcmp(argv[parsed_args], "-t"))
 		{
-			runtime = atoi(argv[i + 1]);
+			runtime = atoi(argv[parsed_args + 1]);
+                        parsed_args++;
 		}
+		else if (!stringcmp(argv[parsed_args], "-o"))
+		{
+			on_char = argv[parsed_args + 1][0];
+                        off_char = argv[parsed_args + 1][1];
+			parsed_args++; 
+		}
+		parsed_args++;
 	}
 
 	return 0;
