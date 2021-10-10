@@ -30,7 +30,7 @@ void updateState (int size, char ruleset[]); //Determine next state
 
 char *ruleTranslation (int rule); //Translate Wolframcode into char array
 
-int binExp (int base, int exponent); //Raise 'base' to the power of 'exponent'
+int binExp (int exponent); //Raise 2 to the power of 'exponent'
 
 int argumentTest (int argsc, char **argv); //Test CLI args
 
@@ -224,7 +224,7 @@ Detect state of the neighborhood and return
  
 	while (neighborhoodIterator >= 0)
 	{
-		result += state[position % worldSize] * binExp (2, neighborhoodIterator);
+		result += state[position % worldSize] * binExp(neighborhoodIterator);
 
 		position++;
 
@@ -234,17 +234,9 @@ Detect state of the neighborhood and return
 	return result;
 }
 
-int binExp (int base, int exponent)
+int binExp (int exponent)
 {
-	int result = 1;
-
-	while (exponent > 0)
-	{
-		result *= base;
-		
-		exponent--;    
-	}
-
+	int result = (1 << exponent);
 	return result;
 }
 
