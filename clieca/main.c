@@ -5,6 +5,10 @@
 #include <string.h>
 
 #define WORLD_SIZE 100
+	
+//Characters representing states in stdout
+#define ON_CHAR '*'
+#define OFF_CHAR ' '
 
 static int worldSize = WORLD_SIZE;
 
@@ -102,9 +106,9 @@ void printState (int size)
  
 	for (int i = 0; i < size; i++)
 	{
-		if (state[i] == 1) printf ("*");
+		if (state[i] == 1) printf("%c", ON_CHAR);
 		
-		else printf (" ");
+		else printf("%c", OFF_CHAR);
 	}
 
 	printf ("\n");
