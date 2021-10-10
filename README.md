@@ -133,4 +133,4 @@ Please note that the 'WORLD_SIZE' define can be modified before compilation to a
 Obviously you should take memory requirements into account when choosing the world size.
 
 Please note that the code might be messy and or inefficient, the result of rather hasty work on my part. 
-There are at least two major inefficiencies I know of. I will fix them at a later date when I don't have so much on my plate.
+
