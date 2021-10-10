@@ -4,9 +4,10 @@
 #include <ctype.h>
 #include <string.h>
 
+//Max world size
 #define WORLD_SIZE 100
 	
-//Characters representing states in stdout
+//Default characters representing states in stdout
 #define ON_CHAR '*'
 #define OFF_CHAR ' '
 
