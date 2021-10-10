@@ -8,35 +8,35 @@
 
 static int worldSize = WORLD_SIZE;
 
-char state[WORLD_SIZE];
+char state[WORLD_SIZE]; //Presented world state, printed on terminal.
 
-char tempState[WORLD_SIZE];
+char tempState[WORLD_SIZE]; //Swap space for the world state
 
 int ruleset = 0;
 
 int runtime = 0;
 
-char randomFlag;
+char randomFlag; //Randomize the initial state
 
 int main (int argsc, char **argv);
  
-void initializeAutomaton (int size);
+void initializeAutomaton (int size); //Set initial state of automaton
 
-void printState (int size);
+void printState (int size); //Print 'worldState'
 
-char neighborhoodDetection (int position);
+char neighborhoodDetection (int position); //Compute neighborhood state
 
-void updateState (int size, char ruleset[]);
+void updateState (int size, char ruleset[]); //Determine next state
 
-char *ruleTranslation (int rule);
+char *ruleTranslation (int rule); //Translate Wolframcode into char array
 
-int binExp (int base, int exponent);
+int binExp (int base, int exponent); //Raise 'base' to the power of 'exponent'
 
-int argumentTest (int argsc, char **argv);
+int argumentTest (int argsc, char **argv); //Test CLI args
 
-int stringcmp(char *str1, char *str2);
+int stringcmp(char *str1, char *str2); //Compare strings (used by 'argumentTest').
 
-int isRule(char *ruleStr);
+int isRule(char *ruleStr); //Verify rule
 
 int main (int argsc, char **argv)
 { 
@@ -70,8 +70,13 @@ int main (int argsc, char **argv)
 
 void initializeAutomaton (int size)
 {
+/*
+Set initial state of the automaton.
+If the the randomization isn't turned on, set only the middle cell
+to '1' and leave rest as '0'.
+*/
 	if (randomFlag) {
-		for (int i = 0; i < worldSize; i++)
+		for (int i = 0; i < size; i++)
 		{
 
 			if (rand() % 2 == 0) state[i] = 1;
@@ -82,13 +87,13 @@ void initializeAutomaton (int size)
 		}
 	}
 	else {
-		for (int i = 0; i < worldSize; i++)
+		for (int i = 0; i < size; i++)
 		{
 			state[i] = 0;
 
 			tempState[i] = 0;
 		}
-		state[worldSize / 2] = 1;
+		state[size / 2] = 1;
 	}
 }
 
@@ -126,14 +131,18 @@ void updateState (int size, char rule[])
  
 int argumentTest (int argsc, char **argv)
 {
-	if (argsc < 2)
+/*
+Parse and test all supplied arguments.
+If an invalid arg, or arg value is found, return '1'.
+*/
+	if (argsc < 2) //Arg number check
 	{
 		printf("Not enough arguments. Please specify rule.\n");
        
 		return 1;
 	}
 
-	if (isRule(argv[1]))
+	if (isRule(argv[1])) //Verify if the rule is valid.
 	{
 		printf("Selected rule '%s' is invalid!\n", argv[1]);
 
@@ -149,7 +158,7 @@ int argumentTest (int argsc, char **argv)
 		return 0;
 	} 
 
-	for (int i = 2; i < argsc; i++) 
+	for (int i = 2; i < argsc; i++)
 	{
 		if (!stringcmp(argv[i],"-s")) 
 		{
@@ -164,7 +173,7 @@ int argumentTest (int argsc, char **argv)
 		else if (randomFlag == 0 && !stringcmp(argv[i], "-r")) 
 		{
 			randomFlag = 1;
-			srand(time(NULL));
+			srand(time(NULL)); //initialize random generator
 		}
 		else if (runtime == 0 && !stringcmp(argv[i], "-t"))
 		{
@@ -177,6 +186,10 @@ int argumentTest (int argsc, char **argv)
 
 char *ruleTranslation (int rule)
 {
+/*
+Translate integer Wolframcode into a size 8 char array.
+Return the result.
+*/
 	char *translatedRule = malloc (8);  
  
 	if (!translatedRule) return NULL;  
@@ -199,7 +212,10 @@ char *ruleTranslation (int rule)
 }
  
 char neighborhoodDetection (int position)
-{  
+{
+/*
+Detect state of the neighborhood and return 
+*/
 	char result = 0;
   
 	char neighborhoodIterator = 2;
@@ -233,7 +249,10 @@ int binExp (int base, int exponent)
 }
 
 int stringcmp(char *str1, char *str2) {
-
+/*
+Compare two strings if they are an exact match.
+Return '0' if they are and '1' otherwise.
+*/
 	if (sizeof(str1) != sizeof(str2)) return 1;
 
 	for (int i = 0; i < 2; i++) 
@@ -245,7 +264,10 @@ int stringcmp(char *str1, char *str2) {
 }
 
 int isRule(char *ruleStr){
-
+/*
+Verify that the supplied rule is a valid Wolframcode.
+Return '0' if the rule is valid and '1' otherwise.
+*/
 	for (int i = 0; i < strlen(ruleStr); i++){
 		if (!isdigit(ruleStr[i])){
 			return 1;
