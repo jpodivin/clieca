@@ -173,6 +173,10 @@ If an invalid arg, or arg value is found, return '1'.
 	{
 		if (!stringcmp(argv[parsed_args],"-s")) 
 		{
+			if (parsed_args + 1 >= argsc){
+				printf("You have to provide world size with '-s'\n");
+				return 1;
+			}
 			if (atoi(argv[parsed_args+1]) > WORLD_SIZE) 
 			{
 				printf("Selected world size exceeds maximum %d\n", WORLD_SIZE);
@@ -189,11 +193,19 @@ If an invalid arg, or arg value is found, return '1'.
 		}
 		else if (runtime == 0 && !stringcmp(argv[parsed_args], "-t"))
 		{
+			if (parsed_args + 1 >= argsc){
+				printf("You have to provide run time with '-t'\n");
+				return 1;
+			}
 			runtime = atoi(argv[parsed_args + 1]);
                         parsed_args++;
 		}
 		else if (!stringcmp(argv[parsed_args], "-o"))
 		{
+			if (parsed_args + 1 >= argsc || strlen(argv[parsed_args + 1]) != 2){
+				printf("You have to provide two characters with '-o'\n");
+				return 1;
+			}
 			on_char = argv[parsed_args + 1][0];
                         off_char = argv[parsed_args + 1][1];
 			parsed_args++; 
